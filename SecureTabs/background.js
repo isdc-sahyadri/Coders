@@ -14,7 +14,7 @@ function checkRiskyURL(tab) {
     if (riskyKeywords.some(keyword => url.includes(keyword))) {
         chrome.notifications.create({
             type: "basic",
-            iconUrl: chrome.runtime.getURL("icons/icon48.png"), // ✅ Ensure correct path
+            iconUrl: chrome.runtime.getURL("icons/icon48.png"),
             title: "⚠ Warning: Suspicious Website!",
             message: `The site ${tab.url} may be risky! Proceed with caution.`,
             priority: 2
