@@ -3,12 +3,12 @@ document.addEventListener("DOMContentLoaded", function () {
     let scanButton = document.getElementById("scanTabs");
     let riskList = document.getElementById("riskList");
 
-    // Load risky sites from storage and display them
+    
     chrome.storage.local.get({ riskySites: [] }, (data) => {
         updateRiskList(data.riskySites);
     });
 
-    // Handle Scan Button Click
+    
     scanButton.addEventListener("click", function () {
         chrome.runtime.sendMessage({ action: "scanTabs" }, (response) => {
             console.log(response.status);
@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-// Function to update the UI with risky sites
 function updateRiskList(sites) {
     let riskList = document.getElementById("riskList");
     riskList.innerHTML = sites.length === 0
@@ -25,7 +24,6 @@ function updateRiskList(sites) {
         : sites.map(url => `<li>⚠️ <a href="${url}" target="_blank">${url}</a></li>`).join("");
 }
 
-// Function to refresh the popup after scanning
 function updatePopup() {
     chrome.storage.local.get({ riskySites: [] }, (data) => {
         updateRiskList(data.riskySites);
@@ -42,9 +40,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     scanButton.addEventListener("click", function () {
-        riskList.innerHTML = "<p>🔍 Scanning...</p>"; // Update UI before scanning
+        riskList.innerHTML = "<p>🔍 Scanning...</p>"; 
 
-        // Delay scanning slightly to allow UI to update
+      
         setTimeout(() => {
             chrome.tabs.query({}, function (tabs) {
                 let riskyTabs = tabs.filter(tab => isRisky(tab.url));
@@ -67,27 +65,26 @@ document.addEventListener("DOMContentLoaded", function () {
                     riskList.innerHTML = "<p>✅ No risky sites detected.</p>";
                 }
             });
-        }, 1000); // Small delay to ensure UI updates first
+        }, 1000); 
     });
 
-    // Function to check if a URL contains risky keywords
+   
     function isRisky(url) {
         if (!url) return false;
         const riskyKeywords = ["phishing", "scam", "malware", "fake", "suspicious","malicioussite"];
         return riskyKeywords.some(keyword => url.toLowerCase().includes(keyword));
     }
 
-    // Function to highlight a risky tab
+    
     function highlightTab(tabId) {
         chrome.scripting.executeScript({
             target: { tabId: tabId },
             func: () => {
-                document.body.style.border = "5px solid red"; // Add red border to risky sites
+                document.body.style.border = "5px solid red"; 
             }
         }).catch(err => console.error("❌ Error highlighting tab:", err));
     }
 
-    // Function to display scan results
     function displayResults(riskyTabs) {
         riskList.innerHTML = "<h3>⚠️ Risky Sites Detected:</h3>";
 
@@ -98,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Function to show Chrome notification
+  
     function showNotification(riskyUrls) {
         let message = `⚠️ Suspicious websites detected:\n${riskyUrls.join("\n")}`;
         chrome.notifications.create({
@@ -111,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
        
     }
 
-    // Load stored risky sites when popup opens
+  
     chrome.storage.local.get({ riskySites: [] }, function (data) {
         if (data.riskySites.length > 0) {
             displayResults(data.riskySites.map(url => ({ url })));
