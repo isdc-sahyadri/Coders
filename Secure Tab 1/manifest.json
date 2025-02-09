@@ -2,19 +2,15 @@
     "manifest_version": 3,
     "name": "SecureTabs",
     "version": "1.0",
-    "description": "Detects security risks in open tabs and alerts users in real-time.",
-    "permissions": ["tabs", "storage","activeTab","notifications"],
+    "description": "Detects risky websites in real time.",
+    "permissions": ["tabs", "scripting","activeTab", "storage", "notifications"],
     "host_permissions": ["<all_urls>"],
     "background": {
       "service_worker": "background.js"
     },
     "action": {
       "default_popup": "popup.html",
-      "default_icon": {
-        "16": "icons/icon16.png",
-        "48": "icons/icon48.png",
-        "128": "icons/icon128.png"
-      }
+      "default_icon": "icons/icon16.png"
     },
     "icons": {
       "16": "icons/icon16.png",
@@ -22,4 +18,3 @@
       "128": "icons/icon128.png"
     }
   }
-  
